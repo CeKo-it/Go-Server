@@ -1,12 +1,16 @@
+# === .env laden, falls vorhanden ===
+ifneq (,$(wildcard .env))
+    include .env
+    export $(shell sed 's/=.*//' .env)
+endif
+
 # ===== Config =====
-# Binary-Name (ohne Endung)
 BINARY       ?= myserver
-# Einstiegspunkt (Main-Paket)
-MAIN         ?= ./main.go       # oder z.B. ./cmd/server
-# Remote-Ziel (Raspberry Pi)
-PI_USER      ?= cedric-Pi
-PI_HOST      ?= 192.168.188.177
-PI_PATH      ?= /home/$(PI_USER)/go-project/$(BINARY)
+MAIN         ?= ./main.go
+PI_USER      ?= pi
+PI_HOST      ?= raspberrypi.local
+PI_PATH      ?= /home/$(PI_USER)/$(BINARY)
+
 # Go-Versionierung (optional)
 VERSION      ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
 COMMIT       ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo unknown)
